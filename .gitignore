@@ -1,3 +1,4 @@
+.gitignore
 /comparison.py
 /env
 /gui guides.md
