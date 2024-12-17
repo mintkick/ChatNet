@@ -1,6 +1,6 @@
 ## Overview
 
-**Project Title**:
+**Project Title**: Python Chat Network
 
 **Project Description**:
 
@@ -53,4 +53,5 @@ The following items I plan to fix, improve, and/or add to this project in the fu
 
 - [ ] Rock Paper Scissors against server computer
 - [ ] Rock Paper Scissors against client opponent
+- [ ] Track number of wins for each player
 - [ ] Add a GUI

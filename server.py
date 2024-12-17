@@ -9,7 +9,7 @@ server_address = (server_ip, server_port)
 
 clients = {} # Key = Connection; Value = Address
 
-wins = {} # Key = Connection; Value = Count
+# wins = {} # Key = Connection; Value = Count
 
 def broadcast(message, connection): # sends messages to client connections
 
@@ -24,7 +24,7 @@ player_move = {} # Key = connection; Value = move
 # MULTI THREAD -- can host multiple clients
 def client_connect(connection, address):
     clients[connection] = address # add to the dictionary
-    wins[connection] = 0
+#    wins[connection] = 0
     
     while True: # continuously check for message data to display
         # now that we're connected, let's read some information from the user
@@ -33,25 +33,27 @@ def client_connect(connection, address):
         # Should it be address instead?
         player_move[connection] = connection.recv(1024) # assign the move (value) to the player connection (key)
                                                         # (arbitrary number of bytes)
-        if len(player_move.values) == 0: # if there is no message data...
+        if player_move[connection] is None: # if there is no message data...
         # if len(player_move.values) < 2: # == 0
             break # ...do not continue
         # print(f"Received move: {player_move.keys()}: {player_move.values()}")
         print(f"Received move: {connection}: {player_move[connection]}")
+        # when running in error, shows:
+        # Received move: <socket.socket fd=400, family=2, type=1, proto=0, laddr=('127.0.0.1', 7000), raddr=('127.0.0.1', 62911)>: b''
 
         # compare(player_move, )
 
         # connection.sendall(data) # report/send all data again; goes to all clients
 
         # once server receives data from all clients, evaluate and broadcast results
-        if len(player_move.values) >= 2: # once we have received 2 or more moves...
+        if player_move.values == 2: # once we have received 2 or more moves...
             broadcast(player_move, connection) # args take in message data and sender
 
         # Hmm... Maybe receive the first player's move and then do a wait message while we wait for a second one?
 
     print(f"Client Disconnected: {address}") # report out of the loop
     del clients[connection]
-    del wins[connection]
+#    del wins[connection]
     connection.close() # needed?
 
 
