@@ -13,10 +13,10 @@ Chat with users in a Python terminal connected to a server. The server is likewi
 - The server processes the request and sends a response back to a client
 - The server can handle a client disconnecting, allowing another client to connect
 
-**Stretch Goal**:
-Provide support for two or more clients (or peers) to connect to the server at the same time.
-OR
-Modify the server or the peer to obtain information from a local file or database in response to a request from the client or another peer.
+**Stretch Goals**:
+
+- [x] Provide support for two or more clients to connect to the server at the same time.
+- [ ] Modify the server to obtain information from a local file or database in response to a request from the client.
 
 ## Instructions for Build and Use
 
@@ -37,7 +37,7 @@ To recreate the development environment, you need the following software and/or 
 
 - VSCode
 - Python 3 (I was using v3.12.6)
-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  - the line `import socket` at the top of the .py files gives the Python code networking capability
 
 ## Useful Websites to Learn More
 
