@@ -8,15 +8,20 @@ server_port = 7000
 server_address = (server_ip, server_port)
 
 clients = {} # Key = Connection; Value = Address
+clients_lock = threading.Lock() # prevents multiple users from using the same client key at the same time
+    # only ONE user will edit the client keys at a time until whatever block this is in is finished,
+    # ensuring all generated/saved keys are unique
 
 def broadcast(message, connection): # sends messages to client connections
-    for client in clients.keys(): # go through all clients
-        if client != connection: # if this client iteration is not the sender...
-            client.sendall(message) # send the message to this client
+    with clients_lock: # below can only be changed by one user at a time
+        for client in clients.keys(): # go through all clients
+            if client != connection: # if this client iteration is not the sender...
+                client.sendall(message) # send the message to this client
 
 # MULTI THREAD -- can host multiple clients
 def client_connect(connection, address):
-    clients[connection] = address # add to the dictionary
+    with clients_lock:
+        clients[connection] = address # add to the dictionary
     
     while True: # continuously check for message data to display
         # now that we're connected, let's read some information from the user
@@ -27,11 +32,18 @@ def client_connect(connection, address):
 
         # connection.sendall(data) # report/send all data again; goes to all clients
 
+# Modify the server to obtain information from a local file in response to a request from the client.
+# Would be something like:
+        # if data == "soliloquy":
+        #     while not EOF:
+        #         printline(hamlets_soliloquy.txt)
+        # else:
         broadcast(data, connection) # args take in message data and sender
 
     print(f"Client Disconnected: {address}") # report out of the loop
-    del clients[connection]
-    connection.close() # needed?
+    with clients_lock:
+        del clients[connection]
+        # connection.close() # needed? there seems to be something that causes an error ("forcibly closed").
     
 
 # MAIN THREAD -- only runs one instance
@@ -49,17 +61,4 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
 
 # falling out of this with block will close the socket
 
-print("Server closed. Ta-ta for now!")
-
-
-
-
-
-
-
-
-
-
-
-# we can't reach into another cubicle and do another employee's work from your own.
-# so instead, we send across a message to our coworker to do the task on HIS side.
+print("Server closed. See you later!")

@@ -15,7 +15,7 @@ def reader(sock): # receives and displays message data; always running
             response = str(response, "UTF-8") # format the bytes data as a string
             print()
             print(response)
-            print()
+            # print()
         except: # if client exits or server ends...
             print("Client Disconnected")
             os._exit(0)
@@ -26,16 +26,14 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock: # alias for netw
     print(f"Connected to server: {server_address}") # confirmation
 
 
-
     # sock.bind(server_address) # associate socket with server address; bind() expects a tuple
     # sock.listen() # you can specify how many active connections there can be at a time here
-
 
 
     # allows for multiple instances of this to run
     thread = threading.Thread(target=reader, args=(sock,)) # pass in the function and arguments (must be tuple, even though there is only one field) to thread into multiple instances
     thread.start() # run a new thread
-    thread.join() # wait for the thread to be done before returning ~control to main()
+    # thread.join() # wait for the thread to be done before returning ~control to main()
     # supposedly can also print(thread), but we won't know at what point in the thread it is printing
 
     print("Send messages through the terminal ['q' to quit]: ") # prompt once
@@ -48,4 +46,4 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock: # alias for netw
 
 # falling out of this with block will close the socket
 
-print("Client closed. Have a nice day.")
+print("Client closed. Ta-ta for now!")
