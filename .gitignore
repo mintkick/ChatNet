@@ -1,4 +1,4 @@
-.gitignore
+/.gitignore
 /comparison.py
 /env
 /gui guides.md
@@ -7,3 +7,4 @@
 /server copy.py
 /sprint_time_log.md
 /workshop
+/hamlets_soliloquy.txt
